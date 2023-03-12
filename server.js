@@ -4,123 +4,61 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const cors = require('cors');
+const knex = require('knex');
+
+const signin = require('./controllers/signin');
+const register = require('./controllers/register');
+const profile = require('./controllers/profile');
+const image = require('./controllers/image');
+
+
+const db = knex({
+    client: 'pg',
+    connection: {
+        host: '127.0.0.1',
+        user: 'postgres',
+        password: 'Aerodex93',
+        database: 'face-detector'
+    }
+});
 
 const app = express();
+
+
 app.use(bodyParser.json()); //middleware
-app.use(cors())
-
-const database = {
-    users: [
-        {
-            id: '123',
-            name: 'tim',
-            email: 'tim@gmail.com',
-            password: 'timmie',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '155',
-            name: 'ph',
-            email: 'ph@gmail.com',
-            password: 'phkr',
-            entries: 0,
-            joined: new Date()
-        }
-    ],
-    login: [
-        {
-            id:'589',
-            hash: '',
-            email: 'tim@gmail.com'
-        }
-    ]
-}
-
-app.get('/', (req, res) => {
-    res.json(database.users);
-});
-
-app.post('/signin', (req, res) => {
-    bcrypt.compare(myPlaintextPassword, '$2b$10$60ixCIJe9SSDHqq5wO7hZeSGGAL6u9wUiLI8cKjZMeuJ6tr9nSpg6', function(err, result) {
-        console.log('this is true', result)
-    });
-    if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
-        // res.json("success");
-        res.json(database.users[0]); 
-    } else {
-        res.status(404).json('error login')
-    }
-});
-
-app.post('/register', (req, res) => {
-    const { email, name, password } = req.body;
-    bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-        console.log(hash);
-    });
-    database.users.push({
-        id: '923',
-        name: name,
-        email: email,
-        // password: password,
-        entries: 0,
-        joined: new Date()
-    })
-    res.json(database.users[database.users.length - 1]);
-});
-
-app.get('/profile/:id', (req, res) => {
-    const { id } = req.params;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            return res.json(user);
-        } 
-    })
-    if(!found) {
-        res.status(404).json('no such user');
-    }
-});
+app.use(cors());
 
 
-app.post('/image', (req, res) => {
-    const { id } = req.body;
-    let found = false;
-    database.users.forEach(user => {
-        if (user.id === id) {
-            found = true;
-            user.entries++
-            return res.json(user.entries);
-        } 
-    })
-    if(!found) {
-        res.status(404).json('not found');
-    }
-});
+app.post('/signin', (req,res) => {signin.handleSignin(req, res, db, bcrypt, saltRounds, myPlaintextPassword)});
+
+app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt, saltRounds, myPlaintextPassword)}); //dependecy injection
+
+app.get('/profile/:id', (req,res) => {profile.handleProfileGet(req,res, db)});
+
+app.put('/image', (req,res) => {image.handleImage(req,res,db)});
+
+app.post('/imageurl', (req,res) => {image.handleApiCall(req,res)});
+
+
+// put is a way to update things
 
 app.listen(3000, () => {
     console.log('everything ok!');
 })
 
 
+// const PORT = process.env.PORT
+// app.listen(PORT, () => {
+//     console.log(`Server is listening on port ${PORT}`);
+// })
 
-//to create,
-// signin
-// register
-// profile
-// image
+// console.log(PORT);
 
 
-// app.post('/register', (req, res) => {
-//     const { email, name, password } = req.body;
-//     database.users.push({
-//         id: '923',
-//         name: 'wkk',
-//         email: 'wkk@gmail.com',
-//         password: 'wkkvk',
-//         entries: 5,
-//         joined: new Date()
-//     })
-//     res.json(database.users[database.users.length - 1]);
-// });
+// const DATABASE_URL = process.env.DATABASE_URL
+// app.listen(3000, () => {
+//     console.log(`Server is listening on port ${DATABASE_URL}`);
+// })
+
+// console.log(3000);
+

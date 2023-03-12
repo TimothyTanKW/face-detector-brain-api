@@ -14,7 +14,10 @@ const image = require('./controllers/image');
 
 const db = knex({
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: {
+        connectionString : process.env.DATABASE_URL,
+        ssl:true,
+    }
 });
 
 const app = express();
@@ -24,17 +27,17 @@ app.use(bodyParser.json()); //middleware
 app.use(cors());
 
 
-app.get('/', (req, res) => {res.send('it is working!')});
+app.get('/', (req, res) => { res.send('it is working!') });
 
-app.post('/signin', (req,res) => {signin.handleSignin(req, res, db, bcrypt, saltRounds, myPlaintextPassword)});
+app.post('/signin', (req, res) => { signin.handleSignin(req, res, db, bcrypt, saltRounds, myPlaintextPassword) });
 
-app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt, saltRounds, myPlaintextPassword)}); //dependecy injection
+app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt, saltRounds, myPlaintextPassword) }); //dependecy injection
 
-app.get('/profile/:id', (req,res) => {profile.handleProfileGet(req,res, db)});
+app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) });
 
-app.put('/image', (req,res) => {image.handleImage(req,res,db)});
+app.put('/image', (req, res) => { image.handleImage(req, res, db) });
 
-app.post('/imageurl', (req,res) => {image.handleApiCall(req,res)});
+app.post('/imageurl', (req, res) => { image.handleApiCall(req, res) });
 
 
 // put is a way to update things
@@ -73,4 +76,10 @@ app.listen(process.env.PORT || 3000, () => {
 //         password: 'something123',
 //         database: 'face-detector'
 //     }
+// });
+
+
+// const db = knex({
+//     client: 'pg',
+//     connection: process.env.DATABASE_URL,
 // });

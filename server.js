@@ -42,9 +42,9 @@ app.post('/imageurl', (req,res) => {image.handleApiCall(req,res)});
 
 // put is a way to update things
 
-app.listen(3000, () => {
-    console.log('everything ok!');
-})
+// app.listen(3000, () => {
+//     console.log('everything ok!');
+// })
 
 
 // const PORT = process.env.PORT
@@ -62,9 +62,9 @@ app.listen(3000, () => {
 
 // console.log(3000);
 
-// app.listen(process.env.PORT || 3000, () => {
-//     console.log(`Server is listening on port ${process.env.PORT}`);
-// })
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server is listening on port ${process.env.PORT}`);
+})
 
 
 

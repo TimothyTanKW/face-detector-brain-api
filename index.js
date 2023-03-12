@@ -15,11 +15,12 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connection: {
-        host: 'dpg-cg6ne082qv28u2q22440-a',
-        user: 'something',
-        port:'5432',
+        hostname: 'dpg-cg6ne082qv28u2q22440-a',
+        port: '5432',
+        database: 'face_detector_qs7y',
+        username: 'something',
         password: 'JeLimykKrJ1VwbkkifTeEVq27cBlsVYo',
-        database: 'face_detector_qs7y'
+
     }
 });
 

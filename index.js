@@ -15,12 +15,8 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connection: {
-        hostname: 'dpg-cg6ne082qv28u2q22440-a',
-        port: '5432',
-        database: 'face_detector_qs7y',
-        username: 'something',
-        password: 'JeLimykKrJ1VwbkkifTeEVq27cBlsVYo',
-
+        connectionString : process.env.DATABASE_URL,
+        ssl: true,
     }
 });
 

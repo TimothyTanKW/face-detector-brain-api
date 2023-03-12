@@ -15,12 +15,11 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connection: {
-        host: 'dpg-cg6ne082qv28u2q22440-a.singapore-postgres.render.com',
+        host: 'dpg-cg6ne082qv28u2q22440-a',
         user: 'something',
-        port: '5432',
+        port:'5432',
         password: 'JeLimykKrJ1VwbkkifTeEVq27cBlsVYo',
-        database: 'face_detector_qs7y',
-        ssl: true
+        database: 'face_detector_qs7y'
     }
 });
 
@@ -69,3 +68,15 @@ app.listen(3000, () => {
 // app.listen(process.env.PORT || 3000, () => {
 //     console.log(`Server is listening on port ${process.env.PORT}`);
 // })
+
+
+
+// const db = knex({
+//     client: 'pg',
+//     connection: {
+//         host: '127.0.0.1',
+//         user: 'postgres',
+//         password: 'something123',
+//         database: 'face-detector'
+//     }
+// });

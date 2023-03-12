@@ -19,7 +19,8 @@ const db = knex({
         user: 'something',
         port: '5432',
         password: 'JeLimykKrJ1VwbkkifTeEVq27cBlsVYo',
-        database: 'face_detector_qs7y'
+        database: 'face_detector_qs7y',
+        ssl: true
     }
 });
 
